@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Cache\CacheInterface;
+
+use App\Service\MarkdownHelper;
 
 class PostController extends AbstractController
 {
@@ -23,8 +23,7 @@ class PostController extends AbstractController
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function show(string $slug,
-                         MarkdownParserInterface $markdownParser,
-                         CacheInterface $cache): Response
+        MarkdownHelper $markdownHelper): Response
     {
 
         $postComments = [
@@ -33,11 +32,8 @@ class PostController extends AbstractController
             'Maybe... try saying the spell backwards?',
         ];
         $postText = "I've been turned into a cat, any __thoughts__ on how to turn back?\n While I'm adorable, I don't really care for cat food.";
-        $parsedPostText = $cache->get('markdown_'.md5($postText), function () use ($postText, $markdownParser) {
-            return $markdownParser->transformMarkdown($postText);
-        });
 
-        dump($cache);
+        $parsedPostText = $markdownHelper->parse($postText);
 
         return $this->render('post/post.html.twig', [
             'post' => ucwords(str_replace('-', ' ', $slug)),
