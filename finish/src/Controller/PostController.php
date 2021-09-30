@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Cache\CacheInterface;
 
-class PostsController extends AbstractController
+class PostController extends AbstractController
 {
     /**
      * @Route("/", name="app_homepage")
@@ -26,6 +26,7 @@ class PostsController extends AbstractController
                          MarkdownParserInterface $markdownParser,
                          CacheInterface $cache): Response
     {
+
         $postComments = [
             'Make sure your cat is sitting `purrrfectly` still 🤣',
             'Honestly, I like furry shoes better than MY cat',
@@ -36,6 +37,7 @@ class PostsController extends AbstractController
             return $markdownParser->transformMarkdown($postText);
         });
 
+        dump($cache);
 
         return $this->render('post/post.html.twig', [
             'post' => ucwords(str_replace('-', ' ', $slug)),
