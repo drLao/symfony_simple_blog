@@ -40,6 +40,8 @@ class PostController extends AbstractController
             $this->logger->info("debug mode enabled");
         }
 
+        //throw new \Exception('test sentry error handling');
+
         $postComments = [
             'Make sure your cat is sitting `purrrfectly` still 🤣',
             'Honestly, I like furry shoes better than MY cat',

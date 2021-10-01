@@ -8,6 +8,7 @@
         "easycorp/easy-log-handler": "^1.0.7",
         "knplabs/knp-markdown-bundle": "^1.9",
         "sensio/framework-extra-bundle": "^5.5",
+        "sentry/sentry-symfony": "^4.2",
         "symfony/asset": "5.3.*",
         "symfony/console": "5.3.*",
         "symfony/debug-bundle": "5.3.*",
