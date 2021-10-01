@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,6 +11,16 @@ use App\Service\MarkdownHelper;
 
 class PostController extends AbstractController
 {
+
+    private $logger;
+    private $isDebugEnabled;
+
+    public function __construct(LoggerInterface $logger, bool $isDebugEnabled)
+    {
+        $this->logger = $logger;
+        $this->isDebugEnabled = $isDebugEnabled;
+    }
+
     /**
      * @Route("/", name="app_homepage")
      */
@@ -25,6 +36,9 @@ class PostController extends AbstractController
     public function show(string $slug,
         MarkdownHelper $markdownHelper): Response
     {
+        if ($this->isDebugEnabled) {
+            $this->logger->info("debug mode enabled");
+        }
 
         $postComments = [
             'Make sure your cat is sitting `purrrfectly` still 🤣',
