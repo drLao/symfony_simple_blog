@@ -18,3 +18,5 @@ yarn-error.log
 /.env
 /cache/
 /../../.idea/
+/config/secrets/dev/
+

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Psr\Log\LoggerInterface;
+use Sentry\State\HubInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,8 +35,10 @@ class PostController extends AbstractController
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function show(string $slug,
-        MarkdownHelper $markdownHelper): Response
+        MarkdownHelper $markdownHelper,
+        HubInterface $sentryHub): Response
     {
+        dump($sentryHub);
         if ($this->isDebugEnabled) {
             $this->logger->info("debug mode enabled");
         }
