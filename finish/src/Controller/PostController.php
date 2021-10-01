@@ -38,12 +38,10 @@ class PostController extends AbstractController
         MarkdownHelper $markdownHelper,
         HubInterface $sentryHub): Response
     {
-        dump($sentryHub);
+
         if ($this->isDebugEnabled) {
             $this->logger->info("debug mode enabled");
         }
-
-        //throw new \Exception('test sentry error handling');
 
         $postComments = [
             'Make sure your cat is sitting `purrrfectly` still 🤣',
