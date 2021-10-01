@@ -30,3 +30,7 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\MarkdownHelper:
+        bind:
+            bool $isDebugEnabled: '%kernel.debug%'
+            Psr\Log\LoggerInterface $mdLogger: '@monolog.logger.markdown'
