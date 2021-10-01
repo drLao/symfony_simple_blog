@@ -4,11 +4,12 @@
 body {
     font-family: spartan, serif;
     color: #444;
+    background-color: #ffffff;
 }
 
 .jumbotron-img {
     background: rgb(237, 116, 88);
-    background: linear-gradient(302deg, rgba(237, 116, 88, 1) 16%, rgba(51, 61, 81, 1) 97%);
+    background: linear-gradient(302deg, rgb(84, 145, 33) 16%, rgb(37, 49, 66) 97%);
     color: #fff;
 }
 
@@ -21,7 +22,7 @@ body {
 .q-container-show {
     border-top-right-radius: .25rem;
     border-top-left-radius: .25rem;
-    background-color: #ED7458;
+    background-color: #409335;
 }
 
 .q-container img, .q-container-show img {
@@ -54,7 +55,7 @@ body {
 }
 
 .q-display-response {
-    background: #333D51;
+    background: #365032;
     color: #fff;
 }
 
@@ -84,8 +85,8 @@ body {
 
 .btn-question {
     color: #FFFFFF;
-    background-color: #ED7458;
-    border-color: #D45B3F;
+    background-color: #409335;
+    border-color: #1a3f12;
 }
 
 .btn-question:hover,
