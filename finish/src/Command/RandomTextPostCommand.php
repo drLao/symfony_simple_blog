@@ -12,22 +12,21 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class RandomTextPostCommand extends Command
 {
-    protected static $defaultName = 'app:random-text-post';
-    protected static $defaultDescription = 'Random text post generator';
+    protected static $defaultName = 'app:random-words';
+    protected static $defaultDescription = 'Random words generator';
 
     private $logger;
 
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
-
         parent::__construct();
     }
 
     protected function configure(): void
     {
         $this
-            ->addArgument('your-name', InputArgument::OPTIONAL, 'Your name')
+            ->addArgument('number-of-words', InputArgument::OPTIONAL, 'Type number of words to generate')
             ->addOption('caps', null, InputOption::VALUE_NONE, 'All in CAPS')
         ;
     }
@@ -35,11 +34,7 @@ class RandomTextPostCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $yourName = $input->getArgument('your-name');
-
-        if ($yourName) {
-            $io->note(sprintf('You passed a name: %s', $yourName));
-        }
+        $numberOfWords = $input->getArgument('number-of-words');
 
         $postBits = [
             ' posuit ', ' week ', ' insect ', ' ferrum ', ' aer ', ' dentium ', ' omnis ', ' sublust ', ' vitro ',
@@ -52,7 +47,7 @@ class RandomTextPostCommand extends Command
 
         $postRandomText = "";
 
-        for ($i = 0; $i < 55; $i++) {
+        for ($i = 0; $i < $numberOfWords; $i++) {
             $postRandomText .= $postBits[array_rand($postBits)];
         }
 
