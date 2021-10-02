@@ -3,8 +3,13 @@
 
 body {
     font-family: spartan, serif;
-    color: #444;
-    background-color: #ffffff;
+    color: #807d7d;
+    /*background-color: #ffffff;*/
+    background-color: rgb(24, 26, 27);
+}
+
+footer {
+    background-color: rgb(33, 36, 37) !important;
 }
 
 .jumbotron-img {
@@ -13,10 +18,14 @@ body {
     color: #fff;
 }
 
+.bg-light {
+    background-color: rgb(27, 30, 31) !important;
+}
+
 .q-container {
     border-top-right-radius: .25rem;
     border-top-left-radius: .25rem;
-    background-color: #efefee;
+    background-color: rgb(33, 36, 37);
 }
 
 .q-container-show {
@@ -31,7 +40,7 @@ body {
 }
 
 .q-display {
-    background: #fff;
+    background-color: rgb(34, 41, 42);
     border-radius: .25rem;
 }
 
@@ -105,6 +114,21 @@ body {
     background-image: none;
 }
 
+.btn-secondary {
+    background-color: #1c7430 !important;
+}
+.btn-secondary:hover {
+    background-color: #23b445 !important;
+}
+
+.btn-dark {
+    background-color: #0c5460;
+}
+
+.btn-dark:hover {
+    background-color: #0f7083;
+}
+
 .btn-question.disabled,
 .btn-question[disabled],
 fieldset[disabled] .btn-question,
@@ -129,6 +153,6 @@ fieldset[disabled] .btn-question.active {
     background-color: #FFFFFF;
 }
 
-footer {
-    background-color: #efefee;
+.tech-info-likes {
+    color: #1b1e21;
 }
