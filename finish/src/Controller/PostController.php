@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Post;
 
+use App\Repository\PostRepository;
 use App\Service\RandomTextGeneratorHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -25,11 +26,18 @@ class PostController extends AbstractController
 
     private $logger;
     private $isDebugEnabled;
+    private $randomTextGeneratorHelper;
+    private $postRepository;
 
-    public function __construct(LoggerInterface $logger, bool $isDebugEnabled)
+    public function __construct(LoggerInterface $logger,
+        bool $isDebugEnabled,
+        RandomTextGeneratorHelper $randomTextGeneratorHelper,
+        PostRepository $postRepository)
     {
         $this->logger = $logger;
         $this->isDebugEnabled = $isDebugEnabled;
+        $this->randomTextGeneratorHelper = $randomTextGeneratorHelper;
+        $this->postRepository = $postRepository;
     }
 
     /**
@@ -37,17 +45,27 @@ class PostController extends AbstractController
      * @Route("/posts/new")
      *
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function newPost(EntityManagerInterface $entityManager, RandomTextGeneratorHelper $randomTextGeneratorHelper): Response
+    public function newPost(
+        EntityManagerInterface $entityManager): Response
     {
         $post = new Post();
 
-        $textForPost = $randomTextGeneratorHelper->generateRandomWords(random_int(40, 150));
+        $titleForPost = $this
+            ->randomTextGeneratorHelper
+            ->generateRandomWords(random_int(3, 6));
+        $slugForPost = trim(
+            str_replace("  ", "-", $titleForPost)
+        );
+        $textForPost = $this
+            ->randomTextGeneratorHelper
+            ->generateRandomWords(random_int(40, 150));
 
-        $post->setTitle("Test title for post")
-            ->setSlug("test-slug-for-post-".random_int(0, 1000))
+        $post->setTitle($titleForPost)
+            ->setSlug($slugForPost)
             ->setPostBody($textForPost);
 
         if (random_int(1, 50) > 20) {
@@ -69,7 +87,12 @@ class PostController extends AbstractController
      */
     public function homepage(): Response
     {
-        return $this->render('post/homepage.html.twig');
+        $allPosts = $this->postRepository->findAllPostsThatHaveBeenPosted();
+
+        return $this->render('post/homepage.html.twig', [
+            'allPosts' => $allPosts,
+            ]
+        );
     }
 
     /**
@@ -90,12 +113,29 @@ class PostController extends AbstractController
             'Honestly, I like furry shoes better than MY cat',
             'Maybe... try saying the spell backwards?',
         ];
-        $postText = "I've been turned into a cat, any __thoughts__ on how to turn back?\n While I'm adorable, I don't really care for cat food.";
 
-        $parsedPostText = $markdownHelper->parse($postText);
+        $postFromDb = $this->postRepository->findOneBy(['slug' => $slug]);
 
+        if (!$postFromDb) {
+            $sentry = $sentryHub->getClient();
+            $sentry->captureMessage("User found 404 page!");
+            $sentry->flush();
+
+            return $this->render('404.html.twig');
+        }
+
+        $postedAt = $postFromDb->getPostedAt();
+
+        if (!$postedAt) {
+            $postedAt = "Not posted yet...";
+        } else {
+            $postedAt = $postedAt->format("Y-m-d H:i:s");
+        }
+
+        $parsedPostText = $markdownHelper->parse($postFromDb->getPostBody());
         return $this->render('post/post.html.twig', [
-            'post' => ucwords(str_replace('-', ' ', $slug)),
+            'post' => $postFromDb->getTitle(),
+            'postedAt' => $postedAt,
             'postText' => $parsedPostText,
             'postComments' => $postComments,
         ]);
