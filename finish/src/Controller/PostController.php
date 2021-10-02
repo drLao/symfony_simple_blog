@@ -2,19 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\Post;
-
-use App\Repository\PostRepository;
-use App\Service\RandomTextGeneratorHelper;
 use Doctrine\ORM\EntityManagerInterface;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+
+use App\Entity\Post;
+use App\Repository\PostRepository;
+
 use Psr\Log\LoggerInterface;
 use Sentry\State\HubInterface;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-
+use App\Service\RandomTextGeneratorHelper;
 use App\Service\MarkdownHelper;
 
 class PostController extends AbstractController

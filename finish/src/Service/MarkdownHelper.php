@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Service;
-use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
-use Psr\Log\LoggerInterface;
+
 use Symfony\Contracts\Cache\CacheInterface;
+
+use Psr\Log\LoggerInterface;
+use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 
 class MarkdownHelper
 {

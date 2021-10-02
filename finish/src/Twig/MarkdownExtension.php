@@ -2,10 +2,10 @@
 
 namespace App\Twig;
 
-use App\Service\MarkdownHelper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Twig\TwigFunction;
+
+use App\Service\MarkdownHelper;
 
 class MarkdownExtension extends AbstractExtension
 {

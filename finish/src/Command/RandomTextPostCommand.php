@@ -2,14 +2,16 @@
 
 namespace App\Command;
 
-use App\Service\RandomTextGeneratorHelper;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
+use Psr\Log\LoggerInterface;
+
+use App\Service\RandomTextGeneratorHelper;
 
 class RandomTextPostCommand extends Command
 {
@@ -19,7 +21,8 @@ class RandomTextPostCommand extends Command
     private $logger;
     private $randomTextGeneratorHelper;
 
-    public function __construct(LoggerInterface $logger, RandomTextGeneratorHelper $randomTextGeneratorHelper)
+    public function __construct(LoggerInterface $logger,
+        RandomTextGeneratorHelper $randomTextGeneratorHelper)
     {
         $this->logger = $logger;
         $this->randomTextGeneratorHelper = $randomTextGeneratorHelper;
@@ -29,8 +32,17 @@ class RandomTextPostCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('number-of-words', InputArgument::OPTIONAL, 'Type number of words to generate')
-            ->addOption('caps', null, InputOption::VALUE_NONE, 'All in CAPS')
+            ->addArgument(
+                'number-of-words',
+                InputArgument::OPTIONAL,
+                'Type number of words to generate'
+            )
+            ->addOption(
+                'caps',
+                null,
+                InputOption::VALUE_NONE,
+                'All in CAPS'
+            )
         ;
     }
 
@@ -39,7 +51,9 @@ class RandomTextPostCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $numberOfWords = $input->getArgument('number-of-words');
 
-        $postRandomText = $this->randomTextGeneratorHelper->generateRandomWords($numberOfWords);
+        $postRandomText = $this
+            ->randomTextGeneratorHelper
+            ->generateRandomWords($numberOfWords);
 
         if ($input->getOption('caps')) {
             $postRandomText = strtoupper($postRandomText);
