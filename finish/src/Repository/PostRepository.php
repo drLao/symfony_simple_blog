@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -33,8 +34,7 @@ class PostRepository extends ServiceEntityRepository
 
     public function findAllPostsThatHaveBeenPosted(): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.postedAt IS NOT NULL')
+        return $this->addPostedAtIsNotNull()
             ->orderBy('p.id', 'DESC')
             ->setMaxResults(50)
             ->getQuery()
@@ -42,7 +42,16 @@ class PostRepository extends ServiceEntityRepository
         ;
    }
 
+    private function addPostedAtIsNotNull(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder($queryBuilder)
+            ->andWhere('p.postedAt IS NOT NULL');
+    }
 
+    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $queryBuilder ?: $this->createQueryBuilder('p');
+    }
     /*
     public function findOneBySomeField($value): ?Post
     {
