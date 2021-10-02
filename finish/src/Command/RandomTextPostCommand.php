@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\RandomTextGeneratorHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,10 +17,12 @@ class RandomTextPostCommand extends Command
     protected static $defaultDescription = 'Random words generator';
 
     private $logger;
+    private $randomTextGeneratorHelper;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, RandomTextGeneratorHelper $randomTextGeneratorHelper)
     {
         $this->logger = $logger;
+        $this->randomTextGeneratorHelper = $randomTextGeneratorHelper;
         parent::__construct();
     }
 
@@ -36,20 +39,7 @@ class RandomTextPostCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $numberOfWords = $input->getArgument('number-of-words');
 
-        $postBits = [
-            ' posuit ', ' week ', ' insect ', ' ferrum ', ' aer ', ' dentium ', ' omnis ', ' sublust ', ' vitro ',
-            ' mortuus ', ' caracterem ', ' dirige ', ' tunica ', ' perveniunt ', ' nasum ', ' risu ', ' pascuntur ',
-            ' statera ', ' exercitium ', ' call ', ' adepto ', ' gavisus ', ' proeorous ', ' continent ',
-            ' repentino ', ' vimus ', ' current ', ' postquam ', ' hauriret ', ' fuge ', ' latere ', ' tangerent ',
-            ' fieri ', ' fera ', ' vitae ', ' sensi ', ' frigus ', ' figistrus ', ' castra ', ' aquam ', ' obtinuit ',
-            ' festinate ', ' violet ', ' celebre ',
-        ];
-
-        $postRandomText = "";
-
-        for ($i = 0; $i < $numberOfWords; $i++) {
-            $postRandomText .= $postBits[array_rand($postBits)];
-        }
+        $postRandomText = $this->randomTextGeneratorHelper->generateRandomWords($numberOfWords);
 
         if ($input->getOption('caps')) {
             $postRandomText = strtoupper($postRandomText);

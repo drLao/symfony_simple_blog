@@ -4,13 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Post;
 
+use App\Service\RandomTextGeneratorHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Sentry\State\HubInterface;
 
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Service\MarkdownHelper;
@@ -35,22 +40,15 @@ class PostController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function newPost(EntityManagerInterface $entityManager): Response
+    public function newPost(EntityManagerInterface $entityManager, RandomTextGeneratorHelper $randomTextGeneratorHelper): Response
     {
         $post = new Post();
 
+        $textForPost = $randomTextGeneratorHelper->generateRandomWords(random_int(40, 150));
+
         $post->setTitle("Test title for post")
-            ->setSlug("test-slug-for-post-".random_int(0, 1000));
-        $post->setPostBody(<<<EOF
-fieri  hauriret  week  continent  vimus  call  violet  figistrus  postquam  caracterem  tangerent  risu  frigus  
-      frigus  sublust  violet  week  sublust  fieri  gavisus  perveniunt  fera  fuge  omnis  continent  latere  current 
-      tangerent  pascuntur  sublust  postquam  frigus  adepto  castra  call  figistrus  call  call  fieri  dirige       
-      dentium  continent  vitae  hauriret  continent  obtinuit  adepto  current  sensi  fera  risu  hauriret  risu  aer 
-      hauriret  exercitium  hauriret  perveniunt  fera  latere  continent  posuit  festinate  sublust  tunica           
-      caracterem  nasum  fieri  adepto  fieri  vitae  ferrum  week  mortuus  perveniunt  frigus  gavisus  celebre       
-      repentino  gavisus  vimus  obtinuit  perveniunt  mortuus  frigus  latere  castra  dirige  adepto  aer  omnis      
-      mortuus  sensi  postquam  week  ferrum  pascuntur  obtinuit  proeorous  perveniunt
-EOF);
+            ->setSlug("test-slug-for-post-".random_int(0, 1000))
+            ->setPostBody($textForPost);
 
         if (random_int(1, 50) > 20) {
             $post->setPostedAt(new \DateTime(sprintf('-%d days', random_int(1, 100))));
@@ -100,8 +98,6 @@ EOF);
             'post' => ucwords(str_replace('-', ' ', $slug)),
             'postText' => $parsedPostText,
             'postComments' => $postComments,
- 1       ]);
+        ]);
     }
-
-
 }
