@@ -36,6 +36,8 @@ class RandomPostGenerator
             $createdRandomPost->setPostedAt(new \DateTime(sprintf('-%d days', random_int(1, 100))));
         }
 
+        $createdRandomPost->setVotes(random_int(-50, 50));
+
         return $createdRandomPost;
     }
 }

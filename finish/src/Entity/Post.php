@@ -38,6 +38,11 @@ class Post
      */
     private $postedAt;
 
+    /**
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $votes = 0;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,4 +95,30 @@ class Post
 
         return $this;
     }
+
+    public function getVotes(): int
+    {
+        return $this->votes;
+    }
+
+    public function getVotesInString(): string
+    {
+        $votesCount = $this->getVotes();
+
+        $prefix = $votesCount >= 0 ? " + " : " - ";
+
+        return sprintf(
+            '%s %d',
+            $prefix,
+            abs($votesCount));
+    }
+
+    public function setVotes(int $votes): self
+    {
+        $this->votes = $votes;
+
+        return $this;
+    }
+
+
 }

@@ -9,13 +9,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
-use App\Entity\Post;
 use App\Repository\PostRepository;
 
 use Psr\Log\LoggerInterface;
 use Sentry\State\HubInterface;
 
-use App\Service\RandomTextGeneratorHelper;
 use App\Service\MarkdownHelper;
 
 class PostController extends AbstractController
@@ -26,9 +24,9 @@ class PostController extends AbstractController
     private $postRepository;
 
     public function __construct(LoggerInterface $logger,
-        bool $isDebugEnabled,
-        RandomTextGeneratorHelper $randomTextGeneratorHelper,
-        PostRepository $postRepository)
+        PostRepository $postRepository,
+        bool $isDebugEnabled
+        )
     {
         $this->logger = $logger;
         $this->isDebugEnabled = $isDebugEnabled;
@@ -39,10 +37,10 @@ class PostController extends AbstractController
      *
      * @Route("/posts/new")
      *
+     * @param \App\Service\RandomPostGenerator $randomPostGenerator
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
      */
     public function newPost( RandomPostGenerator $randomPostGenerator,
         EntityManagerInterface $entityManager): Response
@@ -115,6 +113,7 @@ class PostController extends AbstractController
             'postedAt' => $postedAt,
             'postText' => $parsedPostText,
             'postComments' => $postComments,
+            'postVotes' => $postFromDb->getVotesInString(),
         ]);
     }
 }
