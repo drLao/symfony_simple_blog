@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 use App\Service\RandomPostGenerator;
 
 class PostFixtures extends Fixture
-{
+{gst
 
     private $randomPostGenerator;
 
