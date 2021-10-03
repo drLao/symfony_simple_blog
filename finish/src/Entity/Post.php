@@ -120,5 +120,25 @@ class Post
         return $this;
     }
 
+    public function getPostInArrayOfStrings(): array
+    {
+        $postedAt = $this->getPostedAt();
+
+        if (!$postedAt) {
+            $postedAt = "Not posted yet...";
+        } else {
+            $postedAt = $postedAt->format("Y-m-d H:i:s");
+        }
+
+        $postInArrayOfStrings = [
+            'postTitle' => $this->getTitle(),
+            'postSlug' => $this->getSlug(),
+            'postedAt' => $postedAt,
+            'postText' => $this->getPostBody(),
+            'postVotes' => $this->getVotesInString(),
+        ];
+
+        return $postInArrayOfStrings;
+    }
 
 }

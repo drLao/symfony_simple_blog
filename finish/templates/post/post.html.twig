@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}POST: {{ post }}{% endblock %}
+{% block title %}POST: {{ postTitle }} {% endblock %}
 
 {% block body %}
     <div class="container">
@@ -20,22 +20,31 @@
                                         {% endif %}
                                             {{ postedAt }}
                                     </small>
-                                    <div class="vote-arrows flex-fill pt-2 js-vote-arrows tech-info-likes" style="min-width: 90px;">
-                                        <a class="vote-up" href="#" data-direction="up"><i
-                                                    class="far fa-arrow-alt-circle-up"></i></a>
-                                        <a class="vote-down" href="#" data-direction="down"><i
-                                                    class="far fa-arrow-alt-circle-down"></i></a>
-                                        <span>
+                                    <form action="{{ path('app_posts_vote', { slug: postSlug}) }}" method="POST">
+                                        <div class="vote-arrows flex-fill pt-2 tech-info-likes"
+                                             style="min-width: 90px;">
+                                            <button class="vote-up btn btn-link"
+                                                    name="direction"
+                                                    value="up">
+                                                <i class="far fa-arrow-alt-circle-up"></i>
+                                            </button>
+                                            <button class="vote-up btn btn-link"
+                                                    name="direction"
+                                                    value="down">
+                                                <i class="far fa-arrow-alt-circle-down"></i>
+                                            </button>
+                                            <span>
                                             {{ postVotes }}
-{#                                            <span class="js-vote-total">#}
-{#                                                #}
-{#                                            </span>#}
+                                                {# <span class="js-vote-total"> #}
+                                                {# #}
+                                                {# </span> #}
                                         </span>
-                                    </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                             <div class="col">
-                                <h1 class="q-title-show">{{ post }}</h1>
+                                <h1 class="q-title-show">{{ postTitle }}</h1>
                                 <div class="q-display p-3">
                                     <i class="fa fa-quote-left mr-3"></i>
                                     <p class="d-inline">{{ postText|markdown }}</p>
