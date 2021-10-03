@@ -46,7 +46,6 @@ final class PostFactory extends ModelFactory
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'title' => self::faker()->realText(50),
-            'slug' => "",
             'post_body' => self::faker()->paragraphs(4, true),
             'posted_at' => self::faker()->dateTimeBetween('-100 days', '-1 minute'),
             'votes' => random_int(-50, 50),
@@ -58,12 +57,10 @@ final class PostFactory extends ModelFactory
         // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
         return $this
             ->afterInstantiate(function(Post $post) {
-                if (!$post->getSlug()) {
-                    $slugger = new AsciiSlugger();
-                    $post->setSlug($slugger->slug($post->getTitle()));
-                }
-            })
-        ;
+//                if (!$post->getSlug()) {
+//                    $slugger = new AsciiSlugger();
+//                    $post->setSlug($slugger->slug($post->getTitle()));
+            }) ;
     }
 
     protected static function getClass(): string
