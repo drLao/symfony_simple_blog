@@ -9,7 +9,8 @@ class RandomPostGenerator
 
     private $randomTextGeneratorHelper;
 
-    public function __construct(RandomTextGeneratorHelper $randomTextGeneratorHelper)
+    public function __construct(
+        RandomTextGeneratorHelper $randomTextGeneratorHelper)
     {
         $this->randomTextGeneratorHelper = $randomTextGeneratorHelper;
     }

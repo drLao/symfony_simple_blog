@@ -2,26 +2,20 @@
 
 namespace App\DataFixtures;
 
+use App\Factory\PostFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 use App\Service\RandomPostGenerator;
 
 class PostFixtures extends Fixture
-{gst
-
-    private $randomPostGenerator;
-
-    public function __construct(RandomPostGenerator $randomPostGenerator)
-    {
-        $this->randomPostGenerator = $randomPostGenerator;
-    }
+{
 
     public function load(ObjectManager $manager)
     {
-        $postToCreate = $this->randomPostGenerator->createRandomPost();
+       PostFactory::createMany(10);
 
-        $manager->persist($postToCreate);
-        $manager->flush();
+       PostFactory::new()->unpublishedPosts()->create();
+
     }
 }

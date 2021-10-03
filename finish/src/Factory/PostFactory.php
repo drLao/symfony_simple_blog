@@ -4,6 +4,7 @@ namespace App\Factory;
 
 use App\Entity\Post;
 use App\Repository\PostRepository;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -35,14 +36,20 @@ final class PostFactory extends ModelFactory
         // TODO inject services if required (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services)
     }
 
+    public function unpublishedPosts(): self
+    {
+        return $this->addState(['posted_at' => null]);
+    }
+
     protected function getDefaults(): array
     {
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'title' => self::faker()->text(),
-            'slug' => self::faker()->text(),
-            'post_body' => self::faker()->text(),
-            'votes' => self::faker()->randomNumber(),
+            'title' => self::faker()->realText(50),
+            'slug' => "",
+            'post_body' => self::faker()->paragraphs(4, true),
+            'posted_at' => self::faker()->dateTimeBetween('-100 days', '-1 minute'),
+            'votes' => random_int(-50, 50),
         ];
     }
 
@@ -50,7 +57,12 @@ final class PostFactory extends ModelFactory
     {
         // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
         return $this
-            // ->afterInstantiate(function(Post $post) {})
+            ->afterInstantiate(function(Post $post) {
+                if (!$post->getSlug()) {
+                    $slugger = new AsciiSlugger();
+                    $post->setSlug($slugger->slug($post->getTitle()));
+                }
+            })
         ;
     }
 
