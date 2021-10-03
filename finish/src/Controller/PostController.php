@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\RandomPostGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +23,6 @@ class PostController extends AbstractController
 
     private $logger;
     private $isDebugEnabled;
-    private $randomTextGeneratorHelper;
     private $postRepository;
 
     public function __construct(LoggerInterface $logger,
@@ -32,7 +32,6 @@ class PostController extends AbstractController
     {
         $this->logger = $logger;
         $this->isDebugEnabled = $isDebugEnabled;
-        $this->randomTextGeneratorHelper = $randomTextGeneratorHelper;
         $this->postRepository = $postRepository;
     }
 
@@ -45,36 +44,18 @@ class PostController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function newPost(
+    public function newPost( RandomPostGenerator $randomPostGenerator,
         EntityManagerInterface $entityManager): Response
     {
-        $post = new Post();
+        $postToCreate = $randomPostGenerator->createRandomPost();
 
-        $titleForPost = $this
-            ->randomTextGeneratorHelper
-            ->generateRandomWords(random_int(3, 6));
-        $slugForPost = trim(
-            str_replace("  ", "-", $titleForPost)
-        );
-        $textForPost = $this
-            ->randomTextGeneratorHelper
-            ->generateRandomWords(random_int(40, 150));
-
-        $post->setTitle($titleForPost)
-            ->setSlug($slugForPost)
-            ->setPostBody($textForPost);
-
-        if (random_int(1, 50) > 20) {
-            $post->setPostedAt(new \DateTime(sprintf('-%d days', random_int(1, 100))));
-        }
-
-        $entityManager->persist($post);
+        $entityManager->persist($postToCreate);
         $entityManager->flush();
 
         return new Response(sprintf(
             "New post has #%d, slug %s",
-            $post->getId(),
-            $post->getSlug()
+            $postToCreate->getId(),
+            $postToCreate->getSlug()
         ));
     }
 
