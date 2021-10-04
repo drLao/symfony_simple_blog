@@ -36,7 +36,7 @@ class Post
     /**
      * @ORM\Column(type="text")
      */
-    private $post_body;
+    private $postBody;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -46,7 +46,7 @@ class Post
     /**
      * @ORM\Column(type="integer", options={"default" : 0})
      */
-    private $votes = 0;
+    private $postVotes = 0;
 
     public function getId(): ?int
     {
@@ -79,12 +79,12 @@ class Post
 
     public function getPostBody(): ?string
     {
-        return $this->post_body;
+        return $this->postBody;
     }
 
-    public function setPostBody(string $post_body): self
+    public function setPostBody(string $postBody): self
     {
-        $this->post_body = $post_body;
+        $this->postBody = $postBody;
 
         return $this;
     }
@@ -101,14 +101,14 @@ class Post
         return $this;
     }
 
-    public function getVotes(): int
+    public function getPostVotes(): int
     {
-        return $this->votes;
+        return $this->postVotes;
     }
 
     public function getVotesInString(): string
     {
-        $votesCount = $this->getVotes();
+        $votesCount = $this->getPostVotes();
 
         $prefix = $votesCount >= 0 ? " + " : " - ";
 
@@ -118,23 +118,23 @@ class Post
             abs($votesCount));
     }
 
-    public function setVotes(int $votes): self
+    public function setPostVotes(int $postVotes): self
     {
-        $this->votes = $votes;
+        $this->postVotes = $postVotes;
 
         return $this;
     }
 
     public function upVote(): self
     {
-        $this->votes++;
+        $this->postVotes++;
 
         return $this;
     }
 
     public function downVote(): self
     {
-        $this->votes--;
+        $this->postVotes--;
 
         return $this;
     }
