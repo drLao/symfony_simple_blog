@@ -15,7 +15,8 @@ class PostFixtures extends Fixture
     {
        PostFactory::createMany(10);
 
-       PostFactory::new()->unpublishedPosts()->create();
+       PostFactory::new()->unpublishedPosts()->many(5)->create();
+
 
     }
 }
