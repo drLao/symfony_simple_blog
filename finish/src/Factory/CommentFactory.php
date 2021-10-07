@@ -4,6 +4,7 @@ namespace App\Factory;
 
 use App\Entity\Comment;
 use App\Repository\CommentRepository;
+
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -42,6 +43,7 @@ final class CommentFactory extends ModelFactory
             'commentBody' => self::faker()->paragraphs(2, true),
             'username' => self::faker()->userName(),
             'commentVotes' => random_int(-50, 50),
+            'post' => PostFactory::random()
         ];
     }
 
@@ -51,9 +53,6 @@ final class CommentFactory extends ModelFactory
         // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
         return $this
             ->afterInstantiate(function(Comment $comment) {
-//                if (!$post->getSlug()) {
-//                    $slugger = new AsciiSlugger();
-//                    $post->setSlug($slugger->slug($post->getTitle()));
             }) ;
     }
 
