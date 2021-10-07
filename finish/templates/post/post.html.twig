@@ -75,7 +75,7 @@
                             <img src="{{ asset('images/panda.jpg') }}" width="50" height="50" alt="cat">
                         </div>
                         <div class="mr-3 pt-2">
-                            {{ postComment|striptags|parse_markdown }}
+                            {{ postComment.commentBody|striptags|parse_markdown }}
                             <p class="pt-4"><strong>-- dr_Lao</strong>
                                 <a href="https://t.me/panda_irk">
                                     <i class="fab fa-telegram"></i>

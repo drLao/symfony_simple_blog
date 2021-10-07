@@ -47,10 +47,14 @@ final class CommentFactory extends ModelFactory
 
     protected function initialize(): self
     {
+
         // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
         return $this
-            // ->afterInstantiate(function(Comment $comment) {})
-        ;
+            ->afterInstantiate(function(Comment $comment) {
+//                if (!$post->getSlug()) {
+//                    $slugger = new AsciiSlugger();
+//                    $post->setSlug($slugger->slug($post->getTitle()));
+            }) ;
     }
 
     protected static function getClass(): string

@@ -88,12 +88,6 @@ class PostController extends AbstractController
             $this->logger->info("debug mode enabled");
         }
 
-        $postComments = [
-            'Make sure your cat is sitting `purrrfectly` still 🤣',
-            'Honestly, I like furry shoes better than MY cat',
-            'Maybe... try saying the spell backwards?',
-        ];
-
         $postFromDb = $this->postRepository->findOneBy(['slug' => $slug]);
 
         if (!$postFromDb) {
@@ -107,6 +101,8 @@ class PostController extends AbstractController
         $arrayOfPostPropsToTwig = $postFromDb->getPostInArrayOfStrings();
 
         $parsedPostText = $markdownHelper->parse($arrayOfPostPropsToTwig["postText"]);
+
+        $postComments = $postFromDb->getComments();
 
         $arrayOfPostPropsToTwig["postText"] = $parsedPostText;
         $arrayOfPostPropsToTwig["postComments"] = $postComments;
