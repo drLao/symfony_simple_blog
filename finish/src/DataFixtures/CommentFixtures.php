@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Entity\Post;
 use App\Factory\CommentFactory;
 use App\Factory\PostFactory;
+use App\Service\RandomTextGeneratorHelper;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -18,16 +19,24 @@ class CommentFixtures extends Fixture
 //        $this->postFactory = $postFactory;
 //    }
 
+    private $randomTextGeneratorHelper;
+
+    public function __construct(RandomTextGeneratorHelper $randomTextGeneratorHelper)
+    {
+        $this->randomTextGeneratorHelper = $randomTextGeneratorHelper;
+    }
+
+
     public function load(ObjectManager $manager): void
     {
         $comment = new Comment();
-        $comment->setCommentBody('This question is the best? I wish... I knew the answer.');
-        $comment->setUsername('weaverryan');
+        $comment->setCommentBody($this->randomTextGeneratorHelper->generateRandomWords(25));
+        $comment->setUsername('dr_Lao');
 
 
         $post = new Post();
-        $post->setTitle('How to un-disappear your wallet.');
-        $post->setPostBody('... I should not have done this...');
+        $post->setTitle($this->randomTextGeneratorHelper->generateRandomWords(7));
+        $post->setPostBody($this->randomTextGeneratorHelper->generateRandomWords(45));
 
 
 
