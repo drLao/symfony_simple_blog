@@ -118,18 +118,6 @@ class Post
         return $this->postVotes;
     }
 
-    public function getVotesInString(): string
-    {
-        $votesCount = $this->getPostVotes();
-
-        $prefix = $votesCount >= 0 ? " + " : " - ";
-
-        return sprintf(
-            '%s %d',
-            $prefix,
-            abs($votesCount));
-    }
-
     public function setPostVotes(int $postVotes): self
     {
         $this->postVotes = $postVotes;
@@ -149,27 +137,6 @@ class Post
         $this->postVotes--;
 
         return $this;
-    }
-
-    public function getPostInArrayOfStrings(): array
-    {
-        $postedAt = $this->getPostedAt();
-
-        if (!$postedAt) {
-            $postedAt = "Not posted yet...";
-        } else {
-            $postedAt = $postedAt->format("Y-m-d H:i:s");
-        }
-
-        $postInArrayOfStrings = [
-            'postTitle' => $this->getTitle(),
-            'postSlug' => $this->getSlug(),
-            'postedAt' => $postedAt,
-            'postText' => $this->getPostBody(),
-            'postVotes' => $this->getVotesInString(),
-        ];
-
-        return $postInArrayOfStrings;
     }
 
     /**

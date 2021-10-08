@@ -2,37 +2,38 @@
 
 namespace App\Controller;
 
-use App\Entity\Post;
-use App\Service\RandomPostGenerator;
-use Doctrine\ORM\EntityManagerInterface;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
-use App\Repository\PostRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 use Psr\Log\LoggerInterface;
 use Sentry\State\HubInterface;
 
+use App\Entity\Post;
+
 use App\Service\MarkdownHelper;
+use App\Service\PostServiceHelper;
+use App\Service\RandomPostGenerator;
+
 
 class PostController extends AbstractController
 {
 
     private $logger;
     private $isDebugEnabled;
-    private $postRepository;
+    private $postServiceHelper;
 
     public function __construct(
         LoggerInterface $logger,
-        PostRepository $postRepository,
+        PostServiceHelper $postServiceHelper,
         bool $isDebugEnabled
     ) {
         $this->logger = $logger;
         $this->isDebugEnabled = $isDebugEnabled;
-        $this->postRepository = $postRepository;
+        $this->postServiceHelper = $postServiceHelper;
     }
 
     /**
@@ -67,7 +68,7 @@ class PostController extends AbstractController
      */
     public function homepage(): Response
     {
-        $allPosts = $this->postRepository->findAllPostsThatHaveBeenPosted();
+        $allPosts = $this->postServiceHelper->fetchAllPostsFromDb();
 
         return $this->render('post/homepage.html.twig', [
                 'allPosts' => $allPosts,
@@ -88,7 +89,7 @@ class PostController extends AbstractController
             $this->logger->info("debug mode enabled");
         }
 
-        $postFromDb = $this->postRepository->findOneBy(['slug' => $slug]);
+        $postFromDb = $this->postServiceHelper->fetchPostFromDbBySlug($slug);
 
         if (!$postFromDb) {
             $sentry = $sentryHub->getClient();
@@ -98,7 +99,7 @@ class PostController extends AbstractController
             return $this->render('404.html.twig');
         }
 
-        $arrayOfPostPropsToTwig = $postFromDb->getPostInArrayOfStrings();
+        $arrayOfPostPropsToTwig = $this->postServiceHelper->getPostInArrayOfStrings($postFromDb);
 
         $parsedPostText = $markdownHelper->parse($arrayOfPostPropsToTwig["postText"]);
 
