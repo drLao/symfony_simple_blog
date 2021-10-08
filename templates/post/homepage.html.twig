@@ -21,10 +21,31 @@
                             <div class="row">
                                 <div class="col-2 text-center">
                                     <img src="{{ asset('images/panda.jpg') }}" width="100" height="100" alt="panda">
-                                    <div class="flex-fill pt-2 vote-arrows">
-                                        <a class="vote-up" href="#"><i class="far fa-arrow-alt-circle-up"></i></a>
-                                        <span>{{ post.postVotes }}</span>
-                                        <a class="vote-down" href="#"><i class="far fa-arrow-alt-circle-down"></i></a>
+                                    <div class="vote-arrows"
+                                        {{ stimulus_controller('post-vote', {
+                                            url: path('app_posts_vote', {
+                                                id: post.id
+                                                })
+                                            })
+                                        }}
+                                    >
+                                        <button class="vote-up btn btn-link"
+                                            name="directionOfPostComment"
+                                            value="up"
+                                            {{ stimulus_action('post-vote', 'clickVoteOnPost') }}
+                                        >
+                                            <i class="far fa-arrow-alt-circle-up"></i>
+                                        </button>
+                                        <span {{ stimulus_target('post-vote', 'votePostTotal') }}>
+                                            {{ post.postVotes }}
+                                        </span>
+                                        <button class="vote-down btn btn-link"
+                                            name="directionOfPostComment"
+                                            value="down"
+                                            {{ stimulus_action('post-vote', 'clickVoteOnPost') }}
+                                        >
+                                            <i class="far fa-arrow-alt-circle-down"></i>
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="col">

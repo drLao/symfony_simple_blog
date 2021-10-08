@@ -136,18 +136,5 @@ class PostController extends AbstractController
         $entityManager->flush();
 
         return $this->json(['votes' => $post->getPostVotes()]);
-
-//        $direction = $request->request->get('direction');
-//
-//        if ($direction === 'up') {
-//            $post->upVotePost();
-//        } elseif ($direction === 'down') {
-//            $post->downVotePost();
-//
-//        $entityManager->flush();
-//
-//        return $this->redirectToRoute(
-//            'app_posts_show',
-//            ['slug' => $post->getSlug()]);
     }
 }
