@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="jumbotron-img jumbotron jumbotron-fluid">
+    <div class="jumbotron-img p-5 mb-5">
         <div class="container">
             <h1 class="display-4">Your Posts Should Live Somewhere <i class="fas fa-user-ninja"></i></h1>
             <p class="lead">And even comments for them should be there too <i class="fas fa-comments"></i></p>
@@ -10,19 +10,20 @@
     <div class="container">
         <div class="row mb-3">
             <div class="col">
-                <button class="btn btn-question">Post a thought</button>
+                <button class="btn btn-post">Post a thought</button>
             </div>
         </div>
         <div class="row">
             {% for post in allPosts %}
-                <div class="col-12">
-                    <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
+                <div class="col-12 mb-3">
+                    <div style="box-shadow: 2px 4px 8px 4px rgba(174,255,17,0.51);">
                         <div class="q-container p-4">
                             <div class="row">
                                 <div class="col-2 text-center">
                                     <img src="{{ asset('images/panda.jpg') }}" width="100" height="100" alt="panda">
-                                    <div class="d-block mt-3 vote-arrows">
+                                    <div class="flex-fill pt-2 vote-arrows">
                                         <a class="vote-up" href="#"><i class="far fa-arrow-alt-circle-up"></i></a>
+                                        <span>{{ post.postVotes }}</span>
                                         <a class="vote-down" href="#"><i class="far fa-arrow-alt-circle-down"></i></a>
                                     </div>
                                 </div>

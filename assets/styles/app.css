@@ -92,25 +92,25 @@ footer {
     color: #FF4136;
 }
 
-.btn-question {
+.btn-post {
     color: #FFFFFF;
     background-color: #409335;
     border-color: #1a3f12;
 }
 
-.btn-question:hover,
-.btn-question:focus,
-.btn-question:active,
-.btn-question.active,
-.open .dropdown-toggle.btn-question {
+.btn-post:hover,
+.btn-post:focus,
+.btn-post:active,
+.btn-post.active,
+.open .dropdown-toggle.btn-post {
     color: #FFFFFF;
     background-color: #D45B3F;
     border-color: #D45B3F;
 }
 
-.btn-question:active,
-.btn-question.active,
-.open .dropdown-toggle.btn-question {
+.btn-post:active,
+.btn-post.active,
+.open .dropdown-toggle.btn-post {
     background-image: none;
 }
 
@@ -129,26 +129,26 @@ footer {
     background-color: #0f7083;
 }
 
-.btn-question.disabled,
-.btn-question[disabled],
-fieldset[disabled] .btn-question,
-.btn-question.disabled:hover,
-.btn-question[disabled]:hover,
-fieldset[disabled] .btn-question:hover,
-.btn-question.disabled:focus,
-.btn-question[disabled]:focus,
-fieldset[disabled] .btn-question:focus,
-.btn-question.disabled:active,
-.btn-question[disabled]:active,
-fieldset[disabled] .btn-question:active,
-.btn-question.disabled.active,
-.btn-question[disabled].active,
-fieldset[disabled] .btn-question.active {
+.btn-post.disabled,
+.btn-post[disabled],
+fieldset[disabled] .btn-post,
+.btn-post.disabled:hover,
+.btn-post[disabled]:hover,
+fieldset[disabled] .btn-post:hover,
+.btn-post.disabled:focus,
+.btn-post[disabled]:focus,
+fieldset[disabled] .btn-post:focus,
+.btn-post.disabled:active,
+.btn-post[disabled]:active,
+fieldset[disabled] .btn-post:active,
+.btn-post.disabled.active,
+.btn-post[disabled].active,
+fieldset[disabled] .btn-post.active {
     background-color: #ED7458;
     border-color: #D45B3F;
 }
 
-.btn-question .badge {
+.btn-post .badge {
     color: #ED7458;
     background-color: #FFFFFF;
 }

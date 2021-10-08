@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-12">
                 <h2 class="my-4">POST</h2>
-                <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
+                <div style="box-shadow: 2px 4px 8px 4px rgba(174,255,17,0.51);">
                     <div class="q-container-show p-4">
                         <div class="row">
                             <div class="col-2 text-center">
@@ -21,24 +21,21 @@
                                             {{ postedAt }}
                                     </small>
                                     <form action="{{ path('app_posts_vote', { slug: postSlug}) }}" method="POST">
-                                        <div class="vote-arrows flex-fill pt-2 tech-info-likes"
+                                        <div class="vote-arrows d-md-grid pt-2 tech-info-likes"
                                              style="min-width: 90px;">
                                             <button class="vote-up btn btn-link"
                                                     name="direction"
                                                     value="up">
                                                 <i class="far fa-arrow-alt-circle-up"></i>
                                             </button>
+                                            <span>
+                                                {{ postVotes }}
+                                            </span>
                                             <button class="vote-up btn btn-link"
                                                     name="direction"
                                                     value="down">
                                                 <i class="far fa-arrow-alt-circle-down"></i>
                                             </button>
-                                            <span>
-                                            {{ postVotes }}
-                                                {# <span class="js-vote-total"> #}
-                                                {# #}
-                                                {# </span> #}
-                                        </span>
                                         </div>
                                     </form>
                                 </div>
@@ -70,11 +67,14 @@
         <ul class="list-unstyled">
             {% for postComment in postComments %}
                 <li class="mb-4">
-                    <div class="d-flex justify-content-center">
-                        <div class="mr-2 pt-2">
-                            <img src="https://source.unsplash.com/75x75/?portrait={{ random(-10000, 10000) }}" width="75" height="75" alt="placeholder_pic">
+                    <div class="row">
+                        <div class="mr-5 pt-5 col-sm">
+                            <img src="https://source.unsplash.com/75x75/?portrait={{ random(-10000, 10000) }}"
+                                 width="75"
+                                 height="75"
+                                 alt="placeholder_pic">
                         </div>
-                        <div class="mr-3 pt-2">
+                        <div class="mr-3 pt-2 col-lg">
                             {{ postComment.commentBody|striptags|parse_markdown }}
                             <p class="pt-4"><strong>-- {{ postComment.username }}</strong>
                                 <a href="https://t.me/{{ postComment.username }}">
@@ -82,12 +82,37 @@
                                 </a>
                             </p>
                         </div>
-                        <div class="vote-arrows flex-fill pt-2 js-vote-arrows" style="min-width: 90px;">
-                            <a class="vote-up" href="#" data-direction="up"><i
-                                        class="far fa-arrow-alt-circle-up"></i></a>
-                            <a class="vote-down" href="#" data-direction="down"><i
-                                        class="far fa-arrow-alt-circle-down"></i></a>
-                            <span><span class="js-vote-total">{{ postComment.commentVotes }}</span></span>
+                        <div class="col-sm text-end">
+{#                            <div#}
+{#                                class="vote-arrows"#}
+{#                                {{ stimulus_controller('answer-vote', {#}
+{#                                    url: path('comment_vote', {#}
+{#                                        id: 10#}
+{#                                        })#}
+{#                                    })#}
+{#                                }}#}
+{#                            >#}
+                            <div class="vote-arrows">
+                                <button
+                                    class="vote-up btn btn-link"
+                                    name="direction"
+                                    value="up"
+                                    {{ stimulus_action('answer-vote', 'clickVote') }}
+                                >
+                                    <i class="far fa-arrow-alt-circle-up"></i>
+                                </button>
+                                    <span class="js-vote-total">
+                                    {{ postComment.commentVotes }}
+                                </span>
+                                <button
+                                    class="vote-down btn btn-link"
+                                    name="direction"
+                                    value="down"
+                                    {{ stimulus_action('answer-vote', 'clickVote') }}
+                                >
+                                    <i class="far fa-arrow-alt-circle-down"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </li>
