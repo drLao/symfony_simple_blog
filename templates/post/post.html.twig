@@ -72,12 +72,12 @@
                 <li class="mb-4">
                     <div class="d-flex justify-content-center">
                         <div class="mr-2 pt-2">
-                            <img src="{{ asset('images/panda.jpg') }}" width="50" height="50" alt="cat">
+                            <img src="https://source.unsplash.com/75x75/?portrait={{ random(-10000, 10000) }}" width="75" height="75" alt="placeholder_pic">
                         </div>
                         <div class="mr-3 pt-2">
                             {{ postComment.commentBody|striptags|parse_markdown }}
-                            <p class="pt-4"><strong>-- dr_Lao</strong>
-                                <a href="https://t.me/panda_irk">
+                            <p class="pt-4"><strong>-- {{ postComment.username }}</strong>
+                                <a href="https://t.me/{{ postComment.username }}">
                                     <i class="fab fa-telegram"></i>
                                 </a>
                             </p>
@@ -87,7 +87,7 @@
                                         class="far fa-arrow-alt-circle-up"></i></a>
                             <a class="vote-down" href="#" data-direction="down"><i
                                         class="far fa-arrow-alt-circle-down"></i></a>
-                            <span>+ <span class="js-vote-total">6</span></span>
+                            <span><span class="js-vote-total">{{ postComment.commentVotes }}</span></span>
                         </div>
                     </div>
                 </li>
