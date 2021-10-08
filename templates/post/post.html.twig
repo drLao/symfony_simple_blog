@@ -20,24 +20,35 @@
                                         {% endif %}
                                             {{ postedAt }}
                                     </small>
-                                    <form action="{{ path('app_posts_vote', { slug: postSlug}) }}" method="POST">
-                                        <div class="vote-arrows d-md-grid pt-2 tech-info-likes"
-                                             style="min-width: 90px;">
-                                            <button class="vote-up btn btn-link"
-                                                    name="direction"
-                                                    value="up">
-                                                <i class="far fa-arrow-alt-circle-up"></i>
-                                            </button>
-                                            <span>
-                                                {{ postVotes }}
-                                            </span>
-                                            <button class="vote-up btn btn-link"
-                                                    name="direction"
-                                                    value="down">
-                                                <i class="far fa-arrow-alt-circle-down"></i>
-                                            </button>
-                                        </div>
-                                    </form>
+                                    <div
+                                        class="vote-arrows"
+                                        {{ stimulus_controller('post-vote', {
+                                            url: path('app_posts_vote', {
+                                                id: postId
+                                                })
+                                            })
+                                        }}
+                                    >
+                                        <button
+                                            class="vote-up btn btn-link"
+                                            name="directionOfVotePost"
+                                            value="up"
+                                            {{ stimulus_action('post-vote', 'clickVoteOnPost') }}
+                                        >
+                                            <i class="far fa-arrow-alt-circle-up"></i>
+                                        </button>
+                                        <span {{ stimulus_target('post-vote', 'votePostTotal') }}>
+                                            {{ postVotes }}
+                                        </span>
+                                        <button
+                                            class="vote-down btn btn-link"
+                                            name="directionOfVotePost"
+                                            value="down"
+                                            {{ stimulus_action('post-vote', 'clickVoteOnPost') }}
+                                        >
+                                            <i class="far fa-arrow-alt-circle-down"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col">
@@ -83,32 +94,31 @@
                             </p>
                         </div>
                         <div class="col-sm text-end">
-{#                            <div#}
-{#                                class="vote-arrows"#}
-{#                                {{ stimulus_controller('answer-vote', {#}
-{#                                    url: path('comment_vote', {#}
-{#                                        id: 10#}
-{#                                        })#}
-{#                                    })#}
-{#                                }}#}
-{#                            >#}
-                            <div class="vote-arrows">
+                            <div
+                                class="vote-arrows"
+                                {{ stimulus_controller('comment-vote', {
+                                    url: path('app_comments_vote', {
+                                        id: postComment.id
+                                        })
+                                    })
+                                }}
+                            >
                                 <button
                                     class="vote-up btn btn-link"
-                                    name="direction"
+                                    name="directionOfVoteComment"
                                     value="up"
-                                    {{ stimulus_action('answer-vote', 'clickVote') }}
+                                    {{ stimulus_action('comment-vote', 'clickVoteOnComment') }}
                                 >
                                     <i class="far fa-arrow-alt-circle-up"></i>
                                 </button>
-                                    <span class="js-vote-total">
+                                    <span {{ stimulus_target('comment-vote', 'voteCommentTotal') }}>
                                     {{ postComment.commentVotes }}
                                 </span>
                                 <button
                                     class="vote-down btn btn-link"
-                                    name="direction"
+                                    name="directionOfVoteComment"
                                     value="down"
-                                    {{ stimulus_action('answer-vote', 'clickVote') }}
+                                    {{ stimulus_action('comment-vote', 'clickVoteOnComment') }}
                                 >
                                     <i class="far fa-arrow-alt-circle-down"></i>
                                 </button>

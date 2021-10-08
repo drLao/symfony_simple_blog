@@ -125,14 +125,14 @@ class Post
         return $this;
     }
 
-    public function upVote(): self
+    public function upVotePost(): self
     {
         $this->postVotes++;
 
         return $this;
     }
 
-    public function downVote(): self
+    public function downVotePost(): self
     {
         $this->postVotes--;
 

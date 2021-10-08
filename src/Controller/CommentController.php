@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 use Psr\Log\LoggerInterface;
@@ -11,21 +14,27 @@ use Psr\Log\LoggerInterface;
 class CommentController extends AbstractController
 {
     /**
-     * @Route("/comments/{id}/vote/{direction<up|down>}", methods="POST")
+     * @Route("/comments/{id}/vote/", methods="POST", name="app_comments_vote")
      */
-    public function commentVote(int $id, string $direction, LoggerInterface $logger): JsonResponse
+    public function commentVote(Comment $comment,
+        LoggerInterface $logger,
+        Request $request,
+        EntityManagerInterface $entityManager): JsonResponse
     {
-        // todo - use id to query the database
+        $data = json_decode($request->getContent(), true);
+        $direction = $data['directionOfVoteComment'];
 
-        // use real logic here to save this to the database
         if ($direction === 'up') {
             $logger->info('Voting up!');
-            $currentVoteCount = rand(7, 100);
+            $comment->upVoteComment();
         } else {
             $logger->info('Voting down!');
-            $currentVoteCount = rand(0, 5);
+            $comment->downVoteComment();
         }
 
-        return $this->json(['votes' => $currentVoteCount]);
+        $entityManager->persist($comment);
+        $entityManager->flush();
+
+        return $this->json(['votes' => $comment->getCommentVotes()]);
     }
 }

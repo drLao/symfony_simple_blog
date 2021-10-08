@@ -74,6 +74,20 @@ class Comment
         return $this->commentVotes;
     }
 
+    public function upVoteComment(): self
+    {
+        $this->commentVotes++;
+
+        return $this;
+    }
+
+    public function downVoteComment(): self
+    {
+        $this->commentVotes--;
+
+        return $this;
+    }
+
     public function setCommentVotes(int $commentVotes): self
     {
         $this->commentVotes = $commentVotes;

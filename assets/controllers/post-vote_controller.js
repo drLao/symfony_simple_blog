@@ -2,21 +2,20 @@ import { Controller } from 'stimulus';
 import axios from 'axios';
 
 export default class extends Controller {
-    static targets = ['voteCommentTotal'];
+    static targets = ['votePostTotal'];
     static values = {
         url: String,
     }
 
-    clickVoteOnComment(event) {
+    clickVoteOnPost(event) {
         event.preventDefault();
         const button = event.currentTarget;
 
         axios.post(this.urlValue, {
-           directionOfVoteComment: button.value })
+             directionOfVotePost: button.value })
 
             .then((response) => {
-                this.voteCommentTotalTarget.innerHTML = response.data.votes;
-            })
-        ;
+                this.votePostTotalTarget.innerHTML = response.data.votes;
+            });
     }
 }

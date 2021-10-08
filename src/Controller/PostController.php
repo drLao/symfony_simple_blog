@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,32 +107,47 @@ class PostController extends AbstractController
         $postComments = $postFromDb->getComments();
 
         $arrayOfPostPropsToTwig["postText"] = $parsedPostText;
+        $arrayOfPostPropsToTwig["postId"] = $postFromDb->getId();
         $arrayOfPostPropsToTwig["postComments"] = $postComments;
 
         return $this->render('post/post.html.twig', $arrayOfPostPropsToTwig);
     }
 
     /**
-     * @Route ("/posts/{slug}/vote", name="app_posts_vote", methods="POST")
+     * @Route ("/posts/{id}/vote", name="app_posts_vote", methods="POST")
      */
     public function postVote(Post $post,
         Request $request,
         EntityManagerInterface $entityManager): Response
     {
-        $direction = $request->request->get('direction');
+        $data = json_decode($request->getContent(), true);
+        $direction = $data['directionOfVotePost'];
 
+        dump($direction);
         if ($direction === 'up') {
-            $post->upVote();
+            $post->upVotePost();
         } elseif ($direction === 'down') {
-            $post->downVote();
+            $post->downVotePost();
         } else {
             return $this->render('404.html.twig');
         }
 
+        $entityManager->persist($post);
         $entityManager->flush();
 
-        return $this->redirectToRoute(
-            'app_posts_show',
-            ['slug' => $post->getSlug()]);
+        return $this->json(['votes' => $post->getPostVotes()]);
+
+//        $direction = $request->request->get('direction');
+//
+//        if ($direction === 'up') {
+//            $post->upVotePost();
+//        } elseif ($direction === 'down') {
+//            $post->downVotePost();
+//
+//        $entityManager->flush();
+//
+//        return $this->redirectToRoute(
+//            'app_posts_show',
+//            ['slug' => $post->getSlug()]);
     }
 }
