@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Service\RandomTextGeneratorHelper;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,12 +11,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-use Psr\Log\LoggerInterface;
-
-use App\Service\RandomTextGeneratorHelper;
-
 class RandomTextPostCommand extends Command
 {
+    //comment
     protected static $defaultName = 'app:random-words';
     protected static $defaultDescription = 'Random words generator';
 
